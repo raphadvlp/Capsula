@@ -38,6 +38,7 @@ async function initClient() {
 async function authenticate() {
   try {
     await gapi.auth2.getAuthInstance().signIn();
+    console.log("Usuário autenticado com sucesso");
   } catch (error) {
     console.error("Erro ao autenticar", error);
   }
@@ -62,10 +63,10 @@ async function uploadToGoogleDrive(blob) {
     });
 
     console.log("Arquivo enviado com sucesso:", response);
-    alert("Vídeo enviado para o Google Drive com sucesso!"); // Notificação ao usuário
+    alert("Vídeo enviado para o Google Drive com sucesso!");
   } catch (error) {
     console.error("Erro ao enviar o arquivo:", error);
-    alert("Erro ao enviar o vídeo para o Google Drive.");
+    alert("Erro ao enviar o vídeo para o Google Drive: " + error.message);
   }
 }
 
