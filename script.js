@@ -1,3 +1,9 @@
+const CLIENT_ID =
+  "94983669669-udga96dgah91eichjqtqibnd3hpe1qrg.apps.googleusercontent.com"; // Substitua pelo seu Client ID
+const API_KEY = "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"; // Substitua pela sua API Key
+const SCOPES = "https://www.googleapis.com/auth/drive.file";
+
+// Elementos do DOM
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const timerDisplay = document.getElementById("timer");
@@ -10,6 +16,58 @@ let recordedChunks = [];
 let timer;
 let secondsLeft = 60;
 
+// Carregar a biblioteca da API do Google
+function handleClientLoad() {
+  gapi.load("client:auth2", initClient);
+}
+
+// Inicializar o cliente
+async function initClient() {
+  await gapi.client.init({
+    apiKey: API_KEY,
+    clientId: CLIENT_ID,
+    scope: SCOPES,
+    discoveryDocs: [
+      "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+    ],
+  });
+}
+
+// Função para autenticar o usuário
+async function authenticate() {
+  try {
+    await gapi.auth2.getAuthInstance().signIn();
+  } catch (error) {
+    console.error("Erro ao autenticar", error);
+  }
+}
+
+// Função para fazer o upload do vídeo
+async function uploadToGoogleDrive(blob) {
+  try {
+    const fileMetadata = {
+      name: "video.webm",
+      mimeType: "video/webm",
+    };
+    const media = {
+      mimeType: "video/webm",
+      body: blob,
+    };
+
+    const response = await gapi.client.drive.files.create({
+      resource: fileMetadata,
+      media: media,
+      fields: "id",
+    });
+
+    console.log("Arquivo enviado com sucesso:", response);
+    alert("Vídeo enviado para o Google Drive com sucesso!"); // Notificação ao usuário
+  } catch (error) {
+    console.error("Erro ao enviar o arquivo:", error);
+  }
+}
+
+// Solicitar permissão para acessar a câmera e o microfone
 navigator.mediaDevices
   .getUserMedia({ video: true, audio: true })
   .then((stream) => {
@@ -27,9 +85,10 @@ navigator.mediaDevices
       videoPreview.src = videoURL;
       downloadBtn.disabled = false;
 
-      // Implementação do envio para o Google Drive
-      uploadBtn.onclick = () => {
-        uploadToGoogleDrive(blob); // Função que você precisa implementar
+      // Configure o upload do vídeo após a gravação
+      uploadBtn.onclick = async () => {
+        await authenticate(); // Autenticar o usuário antes do upload
+        uploadToGoogleDrive(blob); // Faça o upload do vídeo
       };
     };
   });
@@ -72,7 +131,5 @@ downloadBtn.onclick = () => {
   downloadBtn.disabled = true;
 };
 
-// Função para enviar o vídeo para o Google Drive (implementar a autenticação e upload)
-function uploadToGoogleDrive(blob) {
-  // Implementar o upload para o Google Drive
-}
+// Chamar a função para carregar a biblioteca do Google
+document.addEventListener("DOMContentLoaded", handleClientLoad);
