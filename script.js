@@ -64,6 +64,7 @@ async function uploadToGoogleDrive(blob) {
     alert("Vídeo enviado para o Google Drive com sucesso!"); // Notificação ao usuário
   } catch (error) {
     console.error("Erro ao enviar o arquivo:", error);
+    alert("Erro ao enviar o vídeo para o Google Drive.");
   }
 }
 
@@ -84,6 +85,7 @@ navigator.mediaDevices
       const videoURL = URL.createObjectURL(blob);
       videoPreview.src = videoURL;
       downloadBtn.disabled = false;
+      uploadBtn.disabled = false; // Habilita o botão de upload após parar a gravação
 
       // Configure o upload do vídeo após a gravação
       uploadBtn.onclick = async () => {
