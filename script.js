@@ -2,6 +2,7 @@ const CLIENT_ID =
   "94983669669-udga96dgah91eichjqtqibnd3hpe1qrg.apps.googleusercontent.com"; // Substitua pelo seu Client ID
 const API_KEY = "AIzaSyAqH9zpTa0LPcT385TREIb9I1TeD7XyGCY"; // Substitua pela sua API Key
 const SCOPES = "https://www.googleapis.com/auth/drive.file";
+const REDIRECT_URI = "https://capsula-sand.vercel.app"; // Ajuste conforme necessário
 
 // Elementos do DOM
 const startBtn = document.getElementById("startBtn");
