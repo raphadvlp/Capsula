@@ -3,6 +3,9 @@ const CLIENT_ID =
 const API_KEY = "AIzaSyAqH9zpTa0LPcT385TREIb9I1TeD7XyGCY"; // Substitua pela sua API Key
 const SCOPES = "https://www.googleapis.com/auth/drive.file";
 const REDIRECT_URI = "https://capsula-sand.vercel.app"; // Ajuste conforme necessário
+const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+  REDIRECT_URI
+)}&response_type=token&scope=${SCOPES}`;
 
 // Elementos do DOM
 const startBtn = document.getElementById("startBtn");
